@@ -273,9 +273,6 @@ export function useReflectAttribute(
             const oldValue = record.oldValue
             const newValue = currentTarget.getAttribute(attributeName)
 
-            console.log(oldValue, newValue)
-
-
             let interpretedNewValue: string | null | boolean
             if (config.type === 'boolean') {
               interpretedNewValue = currentTarget.hasAttribute(attributeName)
@@ -291,8 +288,6 @@ export function useReflectAttribute(
             if (config.reflect === true) {
               if (config.ref.value !== interpretedNewValue) {
                 (config.ref as Ref<any>).value = interpretedNewValue
-                console.log(`a: ${config.ref.value}`)
-
               }
             }
           }
