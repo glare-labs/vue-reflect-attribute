@@ -1,0 +1,43 @@
+{
+  "name": "@glare-labs/vue-reflect-attribute",
+  "publishConfig": {
+    "access": "public"
+  },
+  "version": "0.0.1",
+  "type": "module",
+  "keywords": [
+    "vue",
+    "vue-library",
+    "vue-property",
+    "vue-util",
+    "utilities",
+    "reflect",
+    "html"
+  ],
+  "author": "bre97-web",
+  "license": "MIT",
+  "main": "./build/vue-reflect-attribute.js",
+  "module": "./build/vue-reflect-attribute.js",
+  "types": "./build/vue-reflect-attribute.d.ts",
+  "files": [
+    "./build/**/*"
+  ],
+  "exports": {
+    "types": "./build/vue-reflect-attribute.d.ts",
+    "import": "./build/vue-reflect-attribute.js",
+    "require": "./build/vue-reflect-attribute.js"
+  },
+  "scripts": {
+    "dev": "vite",
+    "build": "tsc && vite build"
+  },
+  "devDependencies": {
+    "@rollup/plugin-typescript": "^12.1.2",
+    "rollup": "^4.40.0",
+    "terser": "^5.39.0",
+    "tslib": "^2.8.1",
+    "typescript": "~5.7.3",
+    "vite": "^6.1.1",
+    "vue": "^3.5.13"
+  }
+}
