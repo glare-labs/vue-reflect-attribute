@@ -73,7 +73,8 @@ useReflectAttribute(htmlElementRef, {
     { attribute: 'selected',  ref: selectedProp,  reflect: false, type: 'boolean' },
     { attribute: 'text',      ref: textProp,      reflect: true,  type: 'string' },
     { attribute: 'paragraph', ref: paragraphProp, reflect: false, type: 'string' },
-  ]
+  ],
+  tick: 'before',
 })
 
 onMounted(() => {
@@ -97,6 +98,65 @@ onMounted(() => {
    * HTML: true      DATA: false
    * HTML: NEW TEXT  DATA: NEW TEXT
    * HTML: NEW TEXT  DATA: default text
+   */
+})
+
+</script>
+```
+
+```html
+<template>
+  <div>
+    <button id="target-button" ref="htmlElementRef">BUTTON</button>
+    {{ disabledProp }}
+    {{ selectedProp }}
+    {{ textProp }}
+    {{ paragraphProp }}
+  </div>
+</template>
+
+<script setup lang="ts">
+import { useReflectAttribute } from '@glare-labs/vue-reflect-attribute'
+import { nextTick, onMounted, ref } from 'vue'
+
+const htmlElementRef = ref<HTMLElement | null>(null)
+
+const disabledProp = ref(false)
+const selectedProp = ref(false)
+const textProp = ref("default text")
+const paragraphProp = ref("default text")
+
+useReflectAttribute(htmlElementRef, {
+  attributes: [
+    { attribute: 'disabled',  ref: disabledProp,  reflect: true,  type: 'boolean' },
+    { attribute: 'selected',  ref: selectedProp,  reflect: false, type: 'boolean' },
+    { attribute: 'text',      ref: textProp,      reflect: true,  type: 'string' },
+    { attribute: 'paragraph', ref: paragraphProp, reflect: false, type: 'string' },
+  ],
+  tick: 'after',
+})
+
+onMounted(() => {
+  const button = document.querySelector('#target-button')
+
+  button?.setAttribute('disabled', '')
+  button?.setAttribute('selected', '')
+  button?.setAttribute('text', 'NEW TEXT')
+  button?.setAttribute('paragraph', 'NEW TEXT')
+
+  nextTick(() => {
+    console.log(`HTML: ${button?.hasAttribute('disabled')} DATA: ${disabledProp.value}`);
+    console.log(`HTML: ${button?.hasAttribute('selected')} DATA: ${selectedProp.value}`);
+    console.log(`HTML: ${button?.getAttribute('text')} DATA: ${textProp.value}`);
+    console.log(`HTML: ${button?.getAttribute('paragraph')} DATA: ${paragraphProp.value}`);
+  })
+
+  /**
+   * @output
+   * HTML: false         DATA: false
+   * HTML: false         DATA: false
+   * HTML: default text  DATA: default text
+   * HTML: default text  DATA: default text
    */
 })
 
@@ -152,4 +212,26 @@ If I change it to MoM:
  * MoM
  */
 console.log(myRef.value)
+```
+
+### tick option
+
+The tick option determines when useReflectAttribute performs data binding. The default value of tick is 'after', which means useReflectAttribute will perform data binding in nextTick of onMounted.
+
+#### tick: 'before'
+
+```typescript
+onMounted(() => {
+  // ...
+})
+```
+
+#### tick: 'after'
+
+```typescript
+onMounted(() => {
+  nextTick(() => {
+    // ...
+  })
+})
 ```
